@@ -238,7 +238,6 @@ class ImageFootprint:
        self.activation_crs = f"EPSG:{activation_crs}"
        self.mosaick_path = (os.path.join(self.preOrthoFolder, f"{self.mosaick_name}.tif") if self.pre_image_condition 
        else os.path.join(self.postOrthoFolder, f"{self.mosaick_name}.tif"))
-       arcpy.AddMessage(self.mosaick_path)
        self.kml_footprint_path = kml_footprint_path
        self.sensor_domain_value = sensor_domain_value
        self.temp_folder = cems_utils.createTempFolder()
@@ -289,19 +288,18 @@ class ImageFootprint:
             i = 1 
             VRTs = []
             for folder in separate_folders:
-                arcpy.AddMessage(f"Making composite bands of folder {i}...")
+                arcpy.AddMessage(f"Making composite bands of folder number {i}...")
                 tiles = []
                 for root, subdirs, files in os.walk(folder):
                     for file in files:
                         if file.endswith(extention):
                             file_path = os.path.join(root, file)
                             tiles.append(file_path)
-                arcpy.AddMessage(tiles)
                 tiles[0], tiles[2] = tiles[2], tiles[0] # To make the composite as JRC requests
                 storing_vrt_path = os.path.join(self.temp_folder, f"Composite_tile{i}.vrt")
                 gdal.BuildVRT(storing_vrt_path, tiles, **composite_options)
                 VRTs.append(storing_vrt_path)
-                arcpy.AddMessage(f"Composite of folder {i} done!")
+                arcpy.AddMessage(f"Composite of folder number {i} done!")
                 i += 1
             return(VRTs)
         else: return(None)
@@ -324,12 +322,14 @@ class ImageFootprint:
         for image in n_images:
             image_crs = self.GetImageCrs(image)
             if image_crs != self.activation_crs:
+                arcpy.AddMessage(f"Tile {i} crs and activation crs do not coincide! Proceeding with reprojection...")
                 storing_vrt_path = os.path.join(self.temp_folder, f"Reprojected_tile{i}.vrt")
                 option = {"format" : "VRT", "dstSRS": self.activation_crs}
                 reprojection_result = gdal.Warp(storing_vrt_path ,image, **option)
                 if reprojection_result is None:
-                    arcpy.AddError(f"The automatic reprojection of tile {i} could not translate the image crs from {image_crs} to {self.activation_crs}. Please reproject manually and re-run the tool!")
+                    arcpy.AddError(f"The automatic reprojection of tile {i} could not reproject the image crs from {image_crs} to {self.activation_crs}. Please reproject manually and re-run the tool!")
                 images_list.append(storing_vrt_path)
+                arcpy.AddMessage(f"Reprojection of tile {i} successful!")
             else:
                 images_list.append(image)
             i += 1
@@ -348,7 +348,7 @@ class ImageFootprint:
             gdal.BuildVRT(vrt, mosaicking_images, **option)
             option2 = {"format" : "GTiff"}    
             gdal.Translate(self.mosaick_path, vrt, **option2)
-            arcpy.AddMessage(f"Mosaick done! Saved at: {self.mosaick_path}")
+            arcpy.AddMessage(f"Mosaick of {self.sensor_user_input} done! Saved at: {self.mosaick_path}")
         elif len(n_images) == 1 and self.sensor_user_input in ["Sentinel-2", "Landsat-8", "Landsat-9"]:
             option = {"format" : "GTiff"}
             storing_vrt_path = os.path.join(self.temp_folder, "Composite_tile1.vrt")
@@ -360,7 +360,6 @@ class ImageFootprint:
             arcpy.AddMessage(f"Transalting tile: {translating_image}")
             try:
                 gdal.Translate(self.mosaick_path ,translating_image[0], **option)
-                arcpy.AddMessage(self.mosaick_path)
             except Exception as e:
                 arcpy.AddError(e)
         elif self.SAR or (len(n_images) == 1 and n_images[0].endswith(".tif")):
@@ -412,6 +411,7 @@ class ImageFootprint:
         footprint = footprint.drop(columns = ['area'])
         footprint['obj_type'] = 1  
         footprint.to_file(self.shp_footprint_path, driver='ESRI Shapefile')
+        arcpy.AddMessage(f"Shapefile footprint successfully generated at {self.shp_footprint_path}")
     
     def UploadOnToc(self):
 
@@ -499,7 +499,7 @@ class ImageFootprint:
         )
     
     def KmlFootprint(self):
-        arcpy.AddMessage(f"Generating .kml Image Footrpint at: {self.kml_footprint_path}")
+        arcpy.AddMessage("Generating .kml Image Footrpint...")
         driver_shp = ogr.GetDriverByName('ESRI Shapefile')
         dataset_shp = driver_shp.Open(self.shp_footprint_path, 0) 
         driver_kml = ogr.GetDriverByName('KML')
