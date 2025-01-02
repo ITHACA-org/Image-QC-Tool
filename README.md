@@ -32,4 +32,8 @@ Come premessa, è altamente consigliato, durante il runtime, aprire i messaggi c
 
 Si fornirà ora una lista dei parametri accompagnata dalle principali funzioni del tool associate a ciascun parametro:
 
-1) 
+1) EMSR number: Il codice dell'attivazione. Questo parametro si compila **automaticamente**, poichè il tool leggerà tale codice direttamente dall'attribute table dell'AOI
+  
+2) AOI number:  Il codice dell'Area Of Interest. Questo parametro si compila **automaticamente**, poichè il tool leggerà tale codice direttamente dall'attribute table dell'AOI
+  
+3) Product Type: Tipologia di prodotto (FEP, DEL, DELMONIT,...). Questo parametro si compila **automaticamente**, poichè il tool leggerà tale codice direttamente dall'attribute table dell'AOI. Qualora il valore di questo parametro e la tipologia di mappa riportata nel template non coincidessero, apparirà un messaggio di warning affianco al parametro chiedendovi di sistemare questa incongruenza
