@@ -1,3 +1,0 @@
-# Image QC Tool
-
-### Work in progress...
