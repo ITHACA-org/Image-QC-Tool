@@ -14,8 +14,6 @@ from osgeo import gdal, osr
 from shapely.geometry import Polygon, MultiPolygon, mapping
 from functools import reduce
 from osgeo import ogr
-from API import UpdateSmartOLS
-import json
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
@@ -33,7 +31,7 @@ class MetadataReader:
     def _format_datetime(self, date_time):
         if not date_time:
             arcpy.AddError("Date and Time not found in metadata.")
-        return f"{date_time[0:4]}-{date_time[5:7]}-{date_time[8:10]}T{date_time[11:13]}:{date_time[14:16]}:00Z"
+        return f"{date_time[8:10]}/{date_time[5:7]}/{date_time[0:4]} {date_time[11:13]}:{date_time[14:16]}"
     
     def Sentinel2(self):
         Date_and_Time = ""
@@ -194,7 +192,7 @@ class QualityCheckCompiler:
         'Acquisition': 'Acquisition Date and Time: ' + str(self.DateTime) + ' UTC',
         'Availability': 'Availability Date and Time: ' + str(self.Availability)  + ' UTC',
         'Reception': 'Reception Date and Time: ' + str(self.Reception) + ' UTC',
-        'Acceptance': 'Image Quality Acceptance Date and Time: ' + datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ') + ' UTC',
+        'Acceptance': 'Image Quality Acceptance Date and Time: ' + datetime.utcnow().strftime("%d/%m/%Y %H:%M") + ' UTC',
         'Res': 'Resolution: ' + str(self.res) + " m"
         }
         for p in doc.paragraphs:
@@ -227,8 +225,8 @@ class ImageFootprint:
        self.gdb_path = gdb_path
        self.pre_image_condition = pre_image_condition
        self.sensor_user_input = sensor_user_input
-       self.Date = f"{DateTime[8:10]}/{DateTime[5:7]}/{DateTime[0:4]}"
-       self.Time = DateTime[10:]
+       self.Date = DateTime[:10]
+       self.Time = DateTime[11:]
        self.res = res
        self.erasing_condition = erasing_condition
        self.mosaick_name = mosaick_name
@@ -628,8 +626,8 @@ class QualityCheckFootprintTool:
         attribute1 = "source_nam"
         attribute2 = "src_date"
         attribute3 = "source_tm"
-        Date = f"{self.DateTime[8:10]}/{self.DateTime[5:7]}/{self.DateTime[0:4]}"
-        Time = self.DateTime[10:]
+        Date = self.DateTime[:10]
+        Time = self.DateTime[11:]
         processed = False
         with arcpy.da.UpdateCursor(self.A0_source_table, ["OID@", attribute1, attribute2, attribute3]) as cursor:
             for row in cursor:
@@ -716,9 +714,9 @@ class QualityCheckFootprintTool:
         return(DateTime)
     
     def GetFileName(self):
-        year = self.DateTime[0:4]
-        month = self.DateTime[5:7]
-        day = self.DateTime[8:10]
+        year = self.DateTime[6:10]
+        month = self.DateTime[3:5]
+        day = self.DateTime[0:2]
         hour = self.DateTime[11:13]
         min = self.DateTime[14:16]
         if self.map_type in ["REF", "FEP", "DEL", "GRA"]:
