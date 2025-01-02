@@ -9,7 +9,7 @@ Il tool svolge i seguenti compiti:
 3) Compilazione di A0_source & A2_image_footprint_a
 4) Compilazione del Quality Check in formato word
 
-**Il tool si lancia perentoriamente da template**
+**Il tool si lancia PERENTORIAMENTE da template**
 
 ## Processamenti supportati
 
