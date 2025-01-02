@@ -225,7 +225,7 @@ class ImageFootprint:
        self.gdb_path = gdb_path
        self.pre_image_condition = pre_image_condition
        self.sensor_user_input = sensor_user_input
-       self.Date = DateTime[:10]
+       self.Date = f"T{DateTime[:10]}:00Z"
        self.Time = DateTime[11:]
        self.res = res
        self.erasing_condition = erasing_condition
