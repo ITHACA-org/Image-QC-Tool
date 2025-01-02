@@ -225,8 +225,8 @@ class ImageFootprint:
        self.gdb_path = gdb_path
        self.pre_image_condition = pre_image_condition
        self.sensor_user_input = sensor_user_input
-       self.Date = f"T{DateTime[:10]}:00Z"
-       self.Time = DateTime[11:]
+       self.Date = {DateTime[:10]}
+       self.Time = f"T{DateTime[11:]}:00Z"
        self.res = res
        self.erasing_condition = erasing_condition
        self.mosaick_name = mosaick_name
