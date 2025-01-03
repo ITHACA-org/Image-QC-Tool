@@ -40,4 +40,4 @@ Si fornirà ora una lista dei parametri accompagnata dalle principali funzioni d
 
 4) Sensor: Sensore di acquisizione dell'immagine. Lo user dovrà selezionare il sensore dalla lista delle opzioni disponibili. Questo tool è capace di leggere la data di acquisizione entrando direttamente nei metadati della cartella raw del sensore, ma questa funzionalità è disponibile solo per alcune tipologie di sensore (ovvero quelli che vengono impiegati nel 99% delle attivazioni). Qualora venisse selezionato un sensore per cui questa funzionalità non è disponibile un messaggio di warning apparirà di fianco al parametro
 
-5) Image/Tiles:  
+5) Image/Tiles: 
