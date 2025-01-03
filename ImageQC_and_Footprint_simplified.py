@@ -293,7 +293,10 @@ class ImageFootprint:
                         if file.endswith(extention):
                             file_path = os.path.join(root, file)
                             tiles.append(file_path)
-                tiles[0], tiles[2] = tiles[2], tiles[0] # To make the composite as JRC requests
+                try:
+                    tiles[0], tiles[2] = tiles[2], tiles[0] # To make the composite as JRC requests
+                except:
+                    arcpy.AddError(f"Your {self.sensor_user_input} folder contains too many characters and the tool could not find the tiles. Please shorten some paths by renaming the folder or by reducing the levels inside the folder!")
                 storing_vrt_path = os.path.join(self.temp_folder, f"Composite_tile{i}.vrt")
                 gdal.BuildVRT(storing_vrt_path, tiles, **composite_options)
                 VRTs.append(storing_vrt_path)
