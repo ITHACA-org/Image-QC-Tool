@@ -76,3 +76,11 @@ Il tool produrrà i seguenti outputs ai seguenti percorsi:
 
 - **A0_source & A2_image_footprint_a:** Questi layers del .gdb verranno compilati automaticamente. Qualora fossero presenti aree NoData queste verranno caricate insieme al footprint.
 
+### Limiti e criticità
+
+Seppur il tool sia stato testato con differenti tipi di immagini ottiche e SAR, non è ancora stata completata una fase di testing ufficiale di consorzio. Questo significa che vi è sempre una possibilità che il tool fallisca, specialmente se sono utilizzati sensori non noti o con modifiche particolari nei metadati. 
+Il quality acceptance date and time all'interno del file word viene riportato automaticamente prendendo a riferimento il momento in cui viene premuto il tasto run del tool. Tuttavia il tool non è in grado di fornire automaticamente una reason for delay se un tempo maggiore della mezz'ora intercorre fra reception time e quality acceptance time. Pertanto bisogna sempre controllare il .docx! 
+Si invita a controllare **tutti** gli outputs con spirito critico, prestando attenzione alla correttezza della nomenclatura per esempio, oppure al fatto che l'algoritmo abbia assegnato il corretto or_src_id all'immagine processata oppure al corretto CRS dell'immagine processata. 
+
+**Buon Rapid Mapping e che la forza sia con voi!**
+
