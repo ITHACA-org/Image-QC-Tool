@@ -68,5 +68,11 @@ In caso positivo, invece, le operazioni saranno effettuate in modo automatico se
 
 Il tool produrrà i seguenti outputs ai seguenti percorsi:
 
-- **Immagine processata in formato .tif:** Sia che voi abbiate fornito una singola immagine in un formato che non sia .tif, sia che voi abbiate fornito una serie di tiles, il tool creerà nella cartella 02IMAGES l'immagine processata in formato .tif con la nomenclatura standard di consorzio. Se l'immagine che state trattando è pre-evento, l'output sarà collocato in 02IMAGES->PRE->ORTHO, in caso contrario sarà in 02IMAGES->POST->ORTHO. L'unica eccezione si presenta se fornite una sola immagine già in formato .tif. Se questa immagine è già nel CRS dell'attivazione il tool non la processerà
+- **Immagine processata in formato .tif:** Sia che voi abbiate fornito una singola immagine in un formato che non sia .tif, sia che voi abbiate fornito una serie di tiles, il tool creerà nella cartella 02IMAGES l'immagine processata in formato .tif con la nomenclatura standard di consorzio. Se l'immagine che state trattando è pre-evento, l'output sarà collocato in 02IMAGES->PRE->ORTHO, in caso contrario sarà in 02IMAGES->POST->ORTHO. L'unica eccezione si presenta se fornite una sola immagine già in formato .tif. Se questa immagine è già nel CRS dell'attivazione il tool non la processerà, altrimenti troverete il .tif riproiettato nella cartella 02IMAGES.
+
+- **Footprint in formato .kml e QC:** Queste due tipologie di files saranno collocate al percorso 02IMAGES->QC.
+
+- **Footrpint in fromato .shp:** Il tool creerà all'interno della cartella 02IMAGES una nuova folder denominata "Tool_QC_outputs". Qui verrà collocato un file .shp del footprint di backup che potrete usare qualora eliminiate per sbaglio il footprint dal .gdb. Questo shapefile, inoltre, non contiene solo il footprint, ma anche le eventuali aree "NoData" che si possono formare se il footprint non copre interamente la vostra AOI.
+
+- **A0_source & A2_image_footprint_a:** Questi layers del .gdb verranno compilati automaticamente. Qualora fossero presenti aree NoData queste verranno caricate insieme al footprint.
 
