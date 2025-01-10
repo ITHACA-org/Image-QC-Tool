@@ -630,7 +630,7 @@ class QualityCheckFootprintTool:
         attribute2 = "src_date"
         attribute3 = "source_tm"
         Date = self.DateTime[:10]
-        Time = self.DateTime[11:]
+        Time = f"T{self.DateTime[11:]}:00Z"
         processed = False
         with arcpy.da.UpdateCursor(self.A0_source_table, ["OID@", attribute1, attribute2, attribute3]) as cursor:
             for row in cursor:
@@ -641,7 +641,8 @@ class QualityCheckFootprintTool:
         word_document = os.path.join(self.imageQCFolder, self.filename_word + '_IMAGE_QC.docx')
         kml_footprint = os.path.join(self.imageQCFolder, self.filename_footprint +'.kml')
         shapefile_footprint = os.path.join(self.storing_folder, self.filename_footprint + '.shp')
-        ORTHO_image = os.path.join(self.postOrthoFolder, self.filename_word + '.tif')
+        base_folder = self.preOrthoFolder if self.pre_image_condition else self.postOrthoFolder
+        ORTHO_image = os.path.join(base_folder, self.filename_word + '.tif')
         files = [word_document, kml_footprint, ORTHO_image, shapefile_footprint]
         if processed:
             for file in files:
